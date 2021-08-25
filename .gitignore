@@ -1,6 +1,7 @@
 /.idea
+/dataSecret
+/save
 *db
 *sql
 *sqlite
 *sqlite3
-*/save
