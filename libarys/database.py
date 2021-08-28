@@ -23,5 +23,5 @@ class Connect:
 
     def registerUser(self, id: int):
         """Registriere einen neuen User"""
-        self.db.execute(f"INSERT OR IGNORE INTO user(id, createat) VALUES ({str(id)}, '{datetime.datetime.today().strftime('%H:%M:%S on %B %d, %Y')}')")
+        self.db.execute(f"INSERT OR IGNORE INTO user(id, create_at) VALUES ({str(id)}, '{datetime.datetime.today().strftime('%H:%M:%S on %B %d, %Y')}')")
         self.db.commit()

@@ -1,4 +1,4 @@
-import discord, sqini
+import discord, sqini, json, datetime
 from dataSecret import tokens
 
 from libarys import achievements as achiSys, commands as libCommandsF, database as libDatabaseF, getRole, leveling, pageEmbed, UserConnector
@@ -23,16 +23,18 @@ client_team_id = 879996983824228362
 database_path = "./save/data.db"
 database_sync = True
 
-# commands
-commands = libCommandsF.Commands(client_prefix)
-from commands import usercmds, funcmds, admincmds, botTeamCmds
-
-# initialise
-
-database_sqini = sqini.Database(); database_sqini.read(database_path)
+database_sqini = sqini.Database(canDelete=True); database_sqini.read(database_path)
 if database_sync: database_sqini.syncToDatabase()
 database = libDatabaseF.Connect(database_sqini.db)
 api = UserConnector.Connect(database)
+
+
+
+# commands
+commands = libCommandsF.Commands(client_prefix)
+from commands import usercmds, funcmds, admincmds, botTeamCmds, programmingcmds, guildcmds
+
+
 
 # set values
 achiSys.Achievements.api = api

@@ -2,6 +2,20 @@ from settings import *
 
 
 @commands.register(
+    category='team',
+    botTeam=True
+)
+async def addlang(message: discord.Message):
+    args = message.content.split(" ")[1:]
+    author: discord.Member = message.author
+    channel: discord.TextChannel = message.channel
+
+    if not args: await channel.send(embed=discord.Embed(color=discord.Color.red(), description="bitte gebe der sprache einen namen")); return
+    languageName = message.content.split(" ", 1)[1].lower()
+    database.db.execute(f"INSERT OR IGNORE INTO programming_languages(name) VALUES ('{languageName}')")
+    await channel.send(embed=discord.Embed(color=discord.Color.green(), description=f"Die Sprache `{languageName}` wurde hinzugefügt"))
+
+@commands.register(
     category='team',  # 'information'
     botTeam=True
 )
