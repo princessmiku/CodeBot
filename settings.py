@@ -1,7 +1,7 @@
 import discord, sqini, json, datetime
 from dataSecret import tokens
 
-from libarys import achievements as achiSys, commands as libCommandsF, database as libDatabaseF, getRole, leveling, pageEmbed, UserConnector
+from libarys import achievements as achiSys, commands as libCommandsF, database as libDatabaseF, getRole, leveling, pageEmbed, UserConnector, publicRoles
 
 """
 Settings des Code Bots

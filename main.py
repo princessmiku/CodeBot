@@ -157,6 +157,8 @@ async def initialize():
         database.db.execute(
             f"INSERT OR IGNORE INTO  guild(id, name, create_at) VALUES ({str(g.id)}, '{g.name}', '{datetime.datetime.today().strftime('%H:%M:%S on %B %d, %Y')}')")
 
+        async for member in g.fetch_members(limit=None):
+            api.userInsert(member.id)
     startup()
     print("initialize finish, bot now active")
 

@@ -12,13 +12,13 @@ async def lang(message: discord.Message):
             langList: list = json.loads(api.userGet(user.id, "langs"))
         except TypeError:
             await message.channel.send(
-                embed=discord.Embed(description="Der user hat keine daten", color=discord.Color.red()))
+                embed=discord.Embed(description="User have no data", color=discord.Color.red()))
             return
         langStr = "• `" + "`\n• `".join(langList) + "`"
         await message.channel.send(embed=discord.Embed(
             description=langStr,
             color=discord.Color.teal(),
-            title=f"Programmiersprachen von {user.name}"
+            title=f"Languages from {user.name}"
         ))
         return
     if not args:
@@ -32,46 +32,42 @@ async def lang(message: discord.Message):
         for x in liste:
             if not langList.__contains__(x): possible.append(x)
         embed = discord.Embed(
-            description= "Hier kannst du aussuchen welche Sprachen du alles kannst, diese werden dann im Profil angezeigt",
+            description="Here you can choose which languages you can, these will then be displayed in your profile",
             color=discord.Color.teal(),
-            title="Programmiersprachen"
+            title="Programming languages"
         )
         if len(possible) != 0:
             embed.add_field(
-                name="Verfügbar",
-                value= "• `" + "`\n• `".join(possible) + "`"
+                name="Available",
+                value="• `" + "`\n• `".join(possible) + "`"
             )
         if len(langList) != 0:
             embed.add_field(
-                name="Ausgewählt",
+                name="Selected",
                 value="• `" + "`\n• `".join(langList) + "`"
             )
         embed.add_field(
             name="Commands",
-            value=f"Hinzufügen\n`{client_prefix}lang [sprache]`\n\nEntfernen\n`{client_prefix}lang [sprache]`",
+            value=f"Add: `{client_prefix}lang [lang]`\nDelete: `{client_prefix}lang [lang]`\nInfo: `{client_prefix}info [lang]`",
             inline=False
         )
         await message.channel.send(embed=embed)
         return
     result = database.db.execute(f"SELECT * FROM programming_languages WHERE name = '{message.content.split(' ', 1)[1].lower()}'").fetchone()
-    if result is None: await message.channel.send(embed=discord.Embed(description="Sprache nicht gefunden", color=discord.Color.red())); return
+    if result is None: await message.channel.send(embed=discord.Embed(description="Language not found", color=discord.Color.red())); return
     userdata: list = json.loads(api.userGet(message.author.id, "langs"))
     if userdata.__contains__(result[0]):
-        userdata.remove(result[0])
-        userdata = sorted(userdata)
-        api.userUpdate(message.author.id, "langs", json.dumps(userdata))
+        await publicRoles.remove(message.author, result[0], database)
         await message.channel.send(
             embed=discord.Embed(
-                description=f"Die Sprache `{result[0].capitalize()}` wurde aus deinem Profil entfernt"
+                description=f"The language `{result[0].capitalize()}` has been removed from your profile"
             )
         )
         return
-    userdata.append(result[0])
-    userdata = sorted(userdata)
-    api.userUpdate(message.author.id, "langs", json.dumps(userdata))
+    await publicRoles.add(message.author, result[0], database)
     await message.channel.send(
         embed=discord.Embed(
-            description=f"Die Sprache `{result[0].capitalize()}` wurde deinem Profil hinzugefügt"
+            description=f"The language `{result[0].capitalize()}` has been added to your profile"
         )
     )
 
@@ -83,7 +79,7 @@ async def info(message: discord.Message):
     args: list = message.content.split(" ")[1:]
     if not args: await lang(message); return
     result = database.db.execute(f"SELECT * FROM programming_languages WHERE name = '{message.content.split(' ', 1)[1].lower()}'").fetchone()
-    if result is None: await message.channel.send(embed=discord.Embed(description="Sprache nicht gefunden", color=discord.Color.red())); return
+    if result is None: await message.channel.send(embed=discord.Embed(description="Language not found", color=discord.Color.red())); return
     embed = discord.Embed(
             title=result[0].capitalize(),
             color=discord.Color.teal()

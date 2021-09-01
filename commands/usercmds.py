@@ -36,12 +36,12 @@ async def profile(message: discord.Message):
     # setup languages
     langList: list = json.loads(api.userGet(user.id, "langs"))
     if len(langList) > 5:
-        langStr = str(len(langList)) + " Sprachen"
-        embed.set_footer(text="Alle sprachen kannst du mit !lang oder eines anderen Users mit !lang [mention] anschauen")
+        langStr = str(len(langList)) + " Languages"
+        embed.set_footer(text="You can watch all languages with `!lang` or another user with `!lang [mention]`")
     elif len(langList) == 8:
-        langStr = "*Keine ausgweählt*"
+        langStr = "*None selected*"
         if not message.mentions or user == message.author:
-            embed.set_footer(text="mit !lang kann man sich Sprachen zuweisen")
+            embed.set_footer(text="with `!lang` you can assign languages to yourself")
     else:
         langStr = "`" + "`, `".join(langList) + "`"
     embed.add_field(
@@ -73,7 +73,7 @@ async def help(message: discord.Message):
     if not commands.helpPages.__contains__(args[0].lower()):
         await message.channel.send(
             embed=discord.Embed(
-                description="keine seite vorhanden",
+                description="no page available",
                 color=discord.Color.red()
             )
         )

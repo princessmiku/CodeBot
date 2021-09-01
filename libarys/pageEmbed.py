@@ -19,10 +19,31 @@ class PageEmbed:
         num = len(list(self.pages.keys()))
         self.pages[num] = embed
 
+    def addPageList(self, liste: list, entry: int):
+        """Füge eine Seite mit hilfe einer liste hinzu, setze hierbei den seiten umbruch"""
+        liste.sort()
+        count = 0
+        allCount = 0
+        pageStr = ""
+        for x in liste:
+            count += 1
+            allCount += 1
+            pageStr += f"- {str(x)}\n"
+            if count == entry or allCount == len(liste):
+                count = 0
+                self.addPage(
+                    embed=discord.Embed(
+                        description=pageStr,
+                        color=discord.Color.blue()
+                    )
+                )
+                pageStr = ""
+
     def addPageStr(self, text: str):
         """Füge eine Seite hinzu mit einem String"""
         embed = discord.Embed(
-            description=text
+            description=text,
+            color=discord.Color.blue()
         )
         self.addPage(embed)
 
@@ -31,7 +52,7 @@ class PageEmbed:
         if len(self.pages) < 1: await self.channel.send("*no results*"); return
         message = await self.channel.send(embed=discord.Embed(description="*loading...*"))
         maxPages = len(self.pages) - 1
-        if maxPages < 2: await message.edit(embed=self.pages[0].set_footer(text="Data from https://www.coingecko.com/")); return
+        if maxPages < 2: await message.edit(embed=self.pages[0]); return
         if maxPages > 2: await message.add_reaction("↩")
         await message.add_reaction("⬅")
         await message.add_reaction("➡")
@@ -41,7 +62,7 @@ class PageEmbed:
         selectedPage = 0
         while runPages:
             await asyncio.sleep(0.2)
-            await message.edit(embed=self.pages[selectedPage].set_footer(text=f"Page {str(selectedPage + 1)} / {maxPages + 1} | Data from https://www.coingecko.com/"))
+            await message.edit(embed=self.pages[selectedPage].set_footer(text=f"Page {str(selectedPage + 1)} / {maxPages + 1}"))
             try:
                 def check(playload):
                     if self.interact == False: return playload.message_id == message.id and playload.emoji.name in acceptEmojis
