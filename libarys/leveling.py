@@ -1,5 +1,5 @@
 import discord, random, time
-from . import UserConnector, getRole
+from . import UserConnector, etcLib
 
 api: UserConnector.Connect = None
 
@@ -54,7 +54,7 @@ async def level_xp_add(member: discord.Member, channel):
         role = False
         try:
             role_id = level_reward_roles[user_level]
-            role = getRole.getRole(member.guild, roleID=role_id)
+            role = etcLib.getRole(member.guild, roleID=role_id)
             await member.add_roles(role)
         except KeyError:
             None

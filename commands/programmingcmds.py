@@ -57,14 +57,14 @@ async def lang(message: discord.Message):
     if result is None: await message.channel.send(embed=discord.Embed(description="Language not found", color=discord.Color.red())); return
     userdata: list = json.loads(api.userGet(message.author.id, "langs"))
     if userdata.__contains__(result[0]):
-        await publicRoles.remove(message.author, result[0], database)
+        await etcLib.publicRoleRemove(message.author, result[0])
         await message.channel.send(
             embed=discord.Embed(
                 description=f"The language `{result[0].capitalize()}` has been removed from your profile"
             )
         )
         return
-    await publicRoles.add(message.author, result[0], database)
+    await etcLib.publicRoleAdd(message.author, result[0])
     await message.channel.send(
         embed=discord.Embed(
             description=f"The language `{result[0].capitalize()}` has been added to your profile"
@@ -102,5 +102,5 @@ async def info(message: discord.Message):
 @commands.register(
     category="programming",
 )
-async def question(message: discord.Message):
-    pass
+async def please(message: discord.Message):
+    await message.channel.send("*coming soon*")

@@ -1,7 +1,7 @@
 import discord, sqini, json, datetime
 from dataSecret import tokens
 
-from libarys import achievements as achiSys, commands as libCommandsF, database as libDatabaseF, getRole, leveling, pageEmbed, UserConnector, publicRoles
+from libarys import achievements as achiSys, commands as libCommandsF, database as libDatabaseF, leveling, pageEmbed, UserConnector, etcLib
 
 """
 Settings des Code Bots
@@ -40,4 +40,5 @@ from commands import usercmds, funcmds, admincmds, botTeamCmds, programmingcmds,
 achiSys.Achievements.api = api
 libCommandsF.api = api
 leveling.api = api
+etcLib.database = database
 libCommandsF.owner_id, libCommandsF.team_role, libCommandsF.main_guild = client_owner_id, client_team_id, client_mainGuild_id

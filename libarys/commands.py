@@ -1,6 +1,6 @@
 import discord
 
-from libarys import getRole
+from libarys import etcLib
 
 owner_id = 0
 main_guild = 0
@@ -58,7 +58,7 @@ class Commands:
 
         if command["botTeam"]:
             if not message.guild.id == main_guild: return
-            role = getRole.getRole(message.guild, roleID=team_role)
+            role = etcLib.getRole(message.guild, roleID=team_role)
             if not message.author.roles.__contains__(role): return
 
         if command["block"]:
